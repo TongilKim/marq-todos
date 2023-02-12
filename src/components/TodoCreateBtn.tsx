@@ -1,14 +1,23 @@
 import React, { useState } from "react";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdDone } from "react-icons/md";
+import { useAppDispatch, useAppSelector } from "../stores/hooks";
+import { setAddingSubTaskMode } from "../stores/slice/TodoSlice";
 import "./TodoCreateBtn.scss";
 
 const TodoCreateBtn = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-  //   const dispatch = useTodoDispatch();
-  //   const nextId = useTodoNextId();
 
-  const onCilckCreateBtn = () => setOpen(!open);
+  const { addingSubTaskMode } = useAppSelector((state) => state.todoList);
+  const dispatch = useAppDispatch();
+
+  const onCilckCreateBtn = () => {
+    if (addingSubTaskMode) {
+      dispatch(setAddingSubTaskMode(false));
+    } else {
+      setOpen(!open);
+    }
+  };
   const onChange = (e) => setValue(e.target.value);
   const onSubmit = (e) => {
     e.preventDefault();
@@ -35,7 +44,7 @@ const TodoCreateBtn = () => {
         className={open ? "cancelBtn" : "createBtn"}
         onClick={onCilckCreateBtn}
       >
-        <MdAdd />
+        {addingSubTaskMode ? <MdDone /> : <MdAdd />}
       </button>
     </>
   );

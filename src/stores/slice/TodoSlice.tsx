@@ -8,10 +8,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type TinitialState = {
   openEditModal: boolean;
+  addingSubTaskMode: boolean;
 };
 
 const initialState: TinitialState = {
   openEditModal: false,
+  addingSubTaskMode: false,
 };
 
 const todoSlice = createSlice({
@@ -21,8 +23,11 @@ const todoSlice = createSlice({
     setOpenEditModal(state, action: PayloadAction<boolean>) {
       state.openEditModal = action.payload;
     },
+    setAddingSubTaskMode(state, action: PayloadAction<boolean>) {
+      state.addingSubTaskMode = action.payload;
+    },
   },
 });
 
-export const { setOpenEditModal } = todoSlice.actions;
+export const { setOpenEditModal, setAddingSubTaskMode } = todoSlice.actions;
 export default todoSlice.reducer;

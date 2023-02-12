@@ -7,11 +7,15 @@ type Props = {
   children?: React.ReactNode;
 };
 function TodoTemplate({ children }: Props) {
-  const { openEditModal } = useAppSelector((state) => state.todoList);
+  const { openEditModal, addingSubTaskMode } = useAppSelector(
+    (state) => state.todoList
+  );
   return (
     <>
-      <div className="todoContainer_root">{children}</div>
-      {openEditModal && <TodoEditModal />}
+      <div className={addingSubTaskMode ? "overlay" : ""}>
+        <div className="todoContainer_root">{children}</div>
+        {openEditModal && <TodoEditModal />}
+      </div>
     </>
   );
 }
