@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import Modal from "./common/Modal";
 import TodoContainer from "./components/TodoContainer";
 import TodoCreateBtn from "./components/TodoCreateBtn";
 import { TodoHeader } from "./components/TodoHeader";
@@ -36,6 +37,8 @@ function App() {
           <TodoList />
           <TodoCreateBtn />
         </TodoContainer>
+
+        <Modal />
       </div>
 
       {/* <button

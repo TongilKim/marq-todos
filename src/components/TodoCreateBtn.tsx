@@ -30,7 +30,7 @@ const TodoCreateBtn = () => {
           </div>
         </form>
       )}
-      {console.log("open: ", open)}
+
       <button
         className={open ? "cancelBtn" : "createBtn"}
         onClick={onCilckCreateBtn}

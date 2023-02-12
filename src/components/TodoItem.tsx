@@ -12,6 +12,8 @@ const TodoItem = ({ id, done, text }: TProps) => {
 
   const onClickRemove = () => {};
 
+  const onClickTodoText = () => {};
+
   return (
     <div className="todoItem_root">
       <div
@@ -20,7 +22,10 @@ const TodoItem = ({ id, done, text }: TProps) => {
       >
         {done && <MdDone />}
       </div>
-      <div className={`todoText_${done ? "completed" : "uncompleted"}`}>
+      <div
+        className={`todoText_${done ? "completed" : "uncompleted"}`}
+        onClick={onClickTodoText}
+      >
         {text}
       </div>
       <div className="removeBtn" onClick={onClickRemove}>
