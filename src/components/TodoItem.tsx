@@ -1,7 +1,11 @@
 import React from "react";
 import { MdDone, MdDelete, MdAdd } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../stores/hooks";
-import { setOpenEditModal, setTodoList } from "../stores/slice/TodoSlice";
+import {
+  setOpenEditModal,
+  setSelectedTodo,
+  setTodoList,
+} from "../stores/slice/TodoSlice";
 import { Ttodo } from "../types";
 import "./TodoItem.scss";
 
@@ -34,6 +38,7 @@ const TodoItem = ({ id, done, text }: TProps) => {
   const onClickTodoText = () => {
     if (addingSubTaskMode) {
     } else {
+      dispatch(setSelectedTodo(id));
       dispatch(setOpenEditModal(true));
     }
   };

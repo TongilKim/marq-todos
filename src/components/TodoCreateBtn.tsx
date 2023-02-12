@@ -3,7 +3,7 @@ import { MdAdd, MdDone } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../stores/hooks";
 import { setOpenSnackBar, setSnackBarMsg } from "../stores/slice/SnackbarSlice";
 import { setAddingSubTaskMode, setTodoList } from "../stores/slice/TodoSlice";
-import { populateNewId } from "../utils";
+import { getCurrentDate, populateNewId } from "../utils";
 import "./TodoCreateBtn.scss";
 
 const TodoCreateBtn = () => {
@@ -33,7 +33,13 @@ const TodoCreateBtn = () => {
       dispatch(
         setTodoList([
           ...todoList,
-          { id: populateNewId(), text: newTodo, done: false },
+          {
+            id: populateNewId(),
+            text: newTodo,
+            done: false,
+            created: getCurrentDate(),
+            updated: getCurrentDate(),
+          },
         ])
       );
       setNewTodo("");
