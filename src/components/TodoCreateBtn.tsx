@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { MdAdd, MdDone } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../stores/hooks";
-import { setAddingSubTaskMode } from "../stores/slice/TodoSlice";
+import { setOpenSnackBar, setSnackBarMsg } from "../stores/slice/SnackbarSlice";
+import { setAddingSubTaskMode, setTodoList } from "../stores/slice/TodoSlice";
+import { populateNewId } from "../utils";
 import "./TodoCreateBtn.scss";
 
 const TodoCreateBtn = () => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+  const [newTodo, setNewTodo] = useState("");
 
-  const { addingSubTaskMode } = useAppSelector((state) => state.todoList);
+  const { addingSubTaskMode, todoList } = useAppSelector(
+    (state) => state.todoList
+  );
   const dispatch = useAppDispatch();
 
   const onCilckCreateBtn = () => {
@@ -18,22 +22,33 @@ const TodoCreateBtn = () => {
       setOpen(!open);
     }
   };
-  const onChange = (e) => setValue(e.target.value);
+  const onChange = (e) => setNewTodo(e.target.value);
   const onSubmit = (e) => {
     e.preventDefault();
     setOpen(false);
-    setValue("");
+    if (newTodo.length === 0) {
+      dispatch(setSnackBarMsg("신규 Todo는 최소 1글자 이상 이어야 합니다."));
+      dispatch(setOpenSnackBar(true));
+    } else {
+      dispatch(
+        setTodoList([
+          ...todoList,
+          { id: populateNewId(), text: newTodo, done: false },
+        ])
+      );
+      setNewTodo("");
+    }
   };
 
   return (
     <>
       {open && (
-        <form className="createNewTaskForm">
-          <div className="insertForm" onSubmit={onSubmit}>
+        <form className="createNewTaskForm" onSubmit={onSubmit}>
+          <div className="insertForm">
             <input
               autoFocus
               onChange={onChange}
-              value={value}
+              value={newTodo}
               placeholder="할 일을 입력 후, Enter 를 누르세요"
             />
           </div>
@@ -41,7 +56,7 @@ const TodoCreateBtn = () => {
       )}
 
       <button
-        className={open ? "cancelBtn" : "createBtn"}
+        className={open && !addingSubTaskMode ? "cancelBtn" : "createBtn"}
         onClick={onCilckCreateBtn}
       >
         {addingSubTaskMode ? <MdDone /> : <MdAdd />}

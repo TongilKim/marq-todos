@@ -5,12 +5,8 @@
  */
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-type Ttodo = {
-  id: number;
-  text: string;
-  done: boolean;
-};
+import { Ttodo } from "../../types";
+import { populateNewId } from "../../utils";
 
 type TinitialState = {
   todoList: Ttodo[];
@@ -23,17 +19,17 @@ const initialState: TinitialState = {
   addingSubTaskMode: false,
   todoList: [
     {
-      id: 1,
+      id: populateNewId(),
       text: "아침 산책",
       done: true,
     },
     {
-      id: 2,
+      id: populateNewId(),
       text: "오늘의 뉴스 읽기",
       done: true,
     },
-    { id: 3, text: "샌드위치 사 먹기", done: false },
-    { id: 4, text: "리액트 공부하기", done: false },
+    { id: populateNewId(), text: "샌드위치 사 먹기", done: false },
+    { id: populateNewId(), text: "리액트 공부하기", done: false },
   ],
 };
 
@@ -48,6 +44,7 @@ const todoSlice = createSlice({
       state.addingSubTaskMode = action.payload;
     },
     setTodoList(state, action: PayloadAction<Ttodo[]>) {
+      console.log(action.payload);
       state.todoList = action.payload;
     },
   },

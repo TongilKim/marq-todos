@@ -13,3 +13,7 @@ export const getCurrentDayName = () => {
 
   return dayName;
 };
+
+export const populateNewId = () => {
+  return Math.random().toString(36).substring(2, 16);
+};

@@ -2,12 +2,13 @@ import React from "react";
 import { MdDone, MdDelete, MdAdd } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../stores/hooks";
 import { setOpenEditModal, setTodoList } from "../stores/slice/TodoSlice";
+import { Ttodo } from "../types";
 import "./TodoItem.scss";
 
 type TProps = {
-  id: number;
-  text: string;
-  done: boolean;
+  id: Ttodo["id"];
+  text: Ttodo["text"];
+  done: Ttodo["done"];
 };
 const TodoItem = ({ id, done, text }: TProps) => {
   const dispatch = useAppDispatch();
@@ -15,17 +16,20 @@ const TodoItem = ({ id, done, text }: TProps) => {
     (state) => state.todoList
   );
 
-  const onClickCompleteTask = (clickedId) => {
+  const onClickCompleteTask = (clickedId: Ttodo["id"]) => {
     if (addingSubTaskMode) {
     } else {
-      const newTodoList = [...todoList].map((todo) =>
-        todo.id === id ? { ...todo, done: !todo.done } : todo
+      const newTodoList = todoList.map((todo) =>
+        todo.id === clickedId ? { ...todo, done: !todo.done } : todo
       );
       dispatch(setTodoList(newTodoList));
     }
   };
 
-  const onClickRemove = () => {};
+  const onClickRemove = (clickedId: Ttodo["id"]) => {
+    const deletedList = todoList.filter((todo) => todo.id !== clickedId);
+    dispatch(setTodoList(deletedList));
+  };
 
   const onClickTodoText = () => {
     if (addingSubTaskMode) {
@@ -48,7 +52,7 @@ const TodoItem = ({ id, done, text }: TProps) => {
       >
         {text}
       </div>
-      <div className="removeBtn" onClick={onClickRemove}>
+      <div className="removeBtn" onClick={() => onClickRemove(id)}>
         {!addingSubTaskMode && <MdDelete />}
       </div>
     </div>
