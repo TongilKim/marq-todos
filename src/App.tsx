@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import TodoContainer from "./components/TodoContainer";
 import { TodoHeader } from "./components/TodoHeader";
+import TodoList from "./components/TodoList";
 
 async function callApi<T = any>({
   url,
@@ -31,6 +32,7 @@ function App() {
       <div className="App">
         <TodoContainer>
           <TodoHeader />
+          <TodoList />
         </TodoContainer>
       </div>
 

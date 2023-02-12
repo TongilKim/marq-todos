@@ -1,0 +1,51 @@
+.todoItem_root {
+  display: flex;
+  align-items: center;
+  padding-top: 12px;
+  padding-bottom: 12px;
+
+  @mixin checkCircle($circleColor, $checkColor) {
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    color: $circleColor;
+    border: 1px solid $checkColor;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+  .checkCircle_uncompleted {
+    @include checkCircle(none, #ced4da);
+  }
+  .checkCircle_completed {
+    @include checkCircle(#38d9a9, #38d9a9);
+  }
+
+  @mixin todoText($textColor) {
+    flex: 1;
+    font-size: 21px;
+    color: $textColor;
+  }
+  .todoText_completed {
+    @include todoText(#ced4da);
+    text-decoration: line-through;
+  }
+  .todoText_uncompleted {
+    @include todoText(#495057);
+  }
+
+  .removeBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #dee2e6;
+    font-size: 24px;
+    cursor: pointer;
+    &:hover {
+      color: #ff6b6b;
+    }
+  }
+}
