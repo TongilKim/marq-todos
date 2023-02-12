@@ -1,5 +1,7 @@
 import React from "react";
 import { MdDone, MdDelete } from "react-icons/md";
+import { useAppDispatch } from "../stores/hooks";
+import { setOpenEditModal } from "../stores/slice/TodoSlice";
 import "./TodoItem.scss";
 
 type TProps = {
@@ -8,11 +10,15 @@ type TProps = {
   done: boolean;
 };
 const TodoItem = ({ id, done, text }: TProps) => {
+  const dispatch = useAppDispatch();
+
   const onClickCompleteTask = () => {};
 
   const onClickRemove = () => {};
 
-  const onClickTodoText = () => {};
+  const onClickTodoText = () => {
+    dispatch(setOpenEditModal(true));
+  };
 
   return (
     <div className="todoItem_root">

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import "./App.css";
-import TodoEditModal from "./common/TodoEditModal";
+import Snackbar from "./common/Snackbar";
 import TodoContainer from "./components/TodoContainer";
 import TodoCreateBtn from "./components/TodoCreateBtn";
 import { TodoHeader } from "./components/TodoHeader";
 import TodoList from "./components/TodoList";
+import { RootState } from "./stores";
+import { useAppSelector } from "./stores/hooks";
 
 async function callApi<T = any>({
   url,
@@ -28,6 +30,7 @@ async function callApi<T = any>({
 
 function App() {
   //const [fetchResult, setFetchResult] = useState<string[]>([]);
+  const { openSnackBar } = useAppSelector((state: RootState) => state.snackBar);
 
   return (
     <>
@@ -38,7 +41,7 @@ function App() {
           <TodoCreateBtn />
         </TodoContainer>
 
-        <TodoEditModal />
+        {openSnackBar ? <Snackbar /> : null}
       </div>
 
       {/* <button
