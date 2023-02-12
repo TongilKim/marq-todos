@@ -44,7 +44,7 @@ const todoSlice = createSlice({
       state.addingSubTaskMode = action.payload;
     },
     setTodoList(state, action: PayloadAction<Ttodo[]>) {
-      console.log(action.payload);
+      console.log("setting todoList: ", action.payload);
       state.todoList = action.payload;
     },
   },

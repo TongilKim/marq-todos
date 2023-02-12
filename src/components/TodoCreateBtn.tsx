@@ -27,7 +27,7 @@ const TodoCreateBtn = () => {
     e.preventDefault();
     setOpen(false);
     if (newTodo.length === 0) {
-      dispatch(setSnackBarMsg("신규 Todo는 최소 1글자 이상 이어야 합니다."));
+      dispatch(setSnackBarMsg("신규 목록은 최소 1글자 이상 이어야 합니다."));
       dispatch(setOpenSnackBar(true));
     } else {
       dispatch(

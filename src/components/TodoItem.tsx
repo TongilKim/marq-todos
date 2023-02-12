@@ -16,18 +16,18 @@ const TodoItem = ({ id, done, text }: TProps) => {
     (state) => state.todoList
   );
 
-  const onClickCompleteTask = (clickedId: Ttodo["id"]) => {
+  const onClickCompleteTask = () => {
     if (addingSubTaskMode) {
     } else {
       const newTodoList = todoList.map((todo) =>
-        todo.id === clickedId ? { ...todo, done: !todo.done } : todo
+        todo.id === id ? { ...todo, done: !todo.done } : todo
       );
       dispatch(setTodoList(newTodoList));
     }
   };
 
-  const onClickRemove = (clickedId: Ttodo["id"]) => {
-    const deletedList = todoList.filter((todo) => todo.id !== clickedId);
+  const onClickRemove = () => {
+    const deletedList = todoList.filter((todo) => todo.id !== id);
     dispatch(setTodoList(deletedList));
   };
 
@@ -42,7 +42,7 @@ const TodoItem = ({ id, done, text }: TProps) => {
     <div className="todoItem_root">
       <div
         className={`checkCircle_${done ? "completed" : "uncompleted"}`}
-        onClick={() => onClickCompleteTask(id)}
+        onClick={onClickCompleteTask}
       >
         {done ? <MdDone /> : addingSubTaskMode ? <MdAdd /> : null}
       </div>
@@ -52,7 +52,7 @@ const TodoItem = ({ id, done, text }: TProps) => {
       >
         {text}
       </div>
-      <div className="removeBtn" onClick={() => onClickRemove(id)}>
+      <div className="removeBtn" onClick={onClickRemove}>
         {!addingSubTaskMode && <MdDelete />}
       </div>
     </div>
