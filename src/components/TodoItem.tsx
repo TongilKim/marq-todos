@@ -1,7 +1,7 @@
 import React from "react";
 import { MdDone, MdDelete, MdAdd } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../stores/hooks";
-import { setOpenEditModal } from "../stores/slice/TodoSlice";
+import { setOpenEditModal, setTodoList } from "../stores/slice/TodoSlice";
 import "./TodoItem.scss";
 
 type TProps = {
@@ -11,14 +11,25 @@ type TProps = {
 };
 const TodoItem = ({ id, done, text }: TProps) => {
   const dispatch = useAppDispatch();
-  const { addingSubTaskMode } = useAppSelector((state) => state.todoList);
+  const { addingSubTaskMode, todoList } = useAppSelector(
+    (state) => state.todoList
+  );
 
-  const onClickCompleteTask = () => {};
+  const onClickCompleteTask = (clickedId) => {
+    if (addingSubTaskMode) {
+    } else {
+      const newTodoList = [...todoList].map((todo) =>
+        todo.id === id ? { ...todo, done: !todo.done } : todo
+      );
+      dispatch(setTodoList(newTodoList));
+    }
+  };
 
   const onClickRemove = () => {};
 
   const onClickTodoText = () => {
-    if (!addingSubTaskMode) {
+    if (addingSubTaskMode) {
+    } else {
       dispatch(setOpenEditModal(true));
     }
   };
@@ -27,9 +38,9 @@ const TodoItem = ({ id, done, text }: TProps) => {
     <div className="todoItem_root">
       <div
         className={`checkCircle_${done ? "completed" : "uncompleted"}`}
-        onClick={onClickCompleteTask}
+        onClick={() => onClickCompleteTask(id)}
       >
-        {done && !addingSubTaskMode ? <MdDone /> : <MdAdd />}
+        {done ? <MdDone /> : addingSubTaskMode ? <MdAdd /> : null}
       </div>
       <div
         className={`todoText_${done ? "completed" : "uncompleted"}`}
