@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import TodoContainer from "./components/TodoContainer";
+import TodoCreateBtn from "./components/TodoCreateBtn";
 import { TodoHeader } from "./components/TodoHeader";
 import TodoList from "./components/TodoList";
 
@@ -33,6 +34,7 @@ function App() {
         <TodoContainer>
           <TodoHeader />
           <TodoList />
+          <TodoCreateBtn />
         </TodoContainer>
       </div>
 
