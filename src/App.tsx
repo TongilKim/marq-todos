@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import Modal from "./common/Modal";
+import TodoEditModal from "./common/TodoEditModal";
 import TodoContainer from "./components/TodoContainer";
 import TodoCreateBtn from "./components/TodoCreateBtn";
 import { TodoHeader } from "./components/TodoHeader";
@@ -38,7 +38,7 @@ function App() {
           <TodoCreateBtn />
         </TodoContainer>
 
-        <Modal />
+        <TodoEditModal />
       </div>
 
       {/* <button

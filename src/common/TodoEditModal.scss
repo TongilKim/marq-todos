@@ -38,6 +38,21 @@
       padding: 0;
       li {
         margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        svg {
+          margin-left: 5px;
+          cursor: pointer;
+        }
+      }
+
+      .addingTaskModal {
+        width: 200px;
+        background-color: red;
+        transform: translateX(50%);
+        position: absolute;
+        top: 142px;
+        left: 181px;
       }
     }
 
@@ -47,24 +62,6 @@
       margin-top: 14px;
       line-height: 19px;
       font-size: 12px;
-    }
-
-    .button_Container {
-      display: flex;
-      justify-content: flex-end;
-      button {
-        padding: 10px 20px;
-        font-size: 15px;
-        border: 1px solid rgba(255, 230, 207, 0.28);
-        border-radius: 4px;
-        margin: 7px;
-        margin-top: 30px;
-        color: white;
-        background-color: #ff6b6b;
-      }
-      button:first-child {
-        background-color: #38d9a9;
-      }
     }
   }
 }
