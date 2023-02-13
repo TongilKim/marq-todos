@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getCurrentDate } from "../utils";
 import "./TodoEditModal.scss";
 import { IoIosAddCircle } from "react-icons/io";
@@ -6,21 +6,41 @@ import { useAppDispatch, useAppSelector } from "../stores/hooks";
 import {
   setAddingSubTaskMode,
   setOpenEditModal,
+  setTodoList,
 } from "../stores/slice/TodoSlice";
+import Constant from "../constant";
 const TodoEditModal = () => {
+  const [newTodo, setNewTodo] = useState("");
+
   const dispatch = useAppDispatch();
-  const { selectedTodo } = useAppSelector((state) => state.todoList);
+  const { selectedTodo, todoList } = useAppSelector((state) => state.todoList);
 
   const onClickAddingSubTask = () => {
     dispatch(setOpenEditModal(false));
     dispatch(setAddingSubTaskMode(true));
   };
+
   const onClickEditBtn = () => {
+    const newTodoList = todoList.map((todo) =>
+      todo.id === selectedTodo?.id
+        ? { ...todo, text: newTodo, updated: getCurrentDate() }
+        : todo
+    );
+    dispatch(setTodoList(newTodoList));
     dispatch(setOpenEditModal(false));
+    setNewTodo("");
   };
+
   const onClickCloseBtn = () => {
     dispatch(setOpenEditModal(false));
   };
+
+  const onChangeModifyTodoTitle = (e) => setNewTodo(e.target.value);
+
+  useEffect(() => {
+    if (selectedTodo) setNewTodo(selectedTodo.text);
+  }, []);
+
   return (
     <>
       {selectedTodo && (
@@ -39,9 +59,13 @@ const TodoEditModal = () => {
                     </li>
                   </ul>
                 </div>
-                <textarea className="description">
-                  {selectedTodo?.text}
-                </textarea>
+                <textarea
+                  className="description"
+                  value={newTodo}
+                  onChange={onChangeModifyTodoTitle}
+                  readOnly={selectedTodo.done}
+                  maxLength={Constant.TEXTAREA_MAX_LENGTH}
+                />
                 <div className="button_Container">
                   <button onClick={onClickEditBtn}>Edit</button>
                   <button onClick={onClickCloseBtn}>Close</button>

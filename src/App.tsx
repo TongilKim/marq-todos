@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+
 import "./App.css";
 import Snackbar from "./common/Snackbar";
 import TodoContainer from "./components/TodoContainer";
@@ -8,30 +9,49 @@ import TodoList from "./components/TodoList";
 import { RootState } from "./stores";
 import { useAppSelector } from "./stores/hooks";
 
-async function callApi<T = any>({
-  url,
-  method,
-}: {
-  url: string;
-  method: string;
-}) {
-  const res = await fetch(url, { method });
-  const json = await res?.json();
+import { getCurrentDate, populateNewId, populateRandomDate } from "./utils";
 
-  if (!res.ok) {
-    throw {
-      statusText: res.statusText,
-      json,
-    };
-  }
-
-  return json as T;
-}
-
+const initializeData = async () => {
+  localStorage.setItem(
+    "todoList",
+    JSON.stringify([
+      {
+        id: populateNewId(),
+        text: "아침 산책",
+        done: true,
+        created: populateRandomDate(),
+        updated: getCurrentDate(),
+      },
+      {
+        id: populateNewId(),
+        text: "오늘의 뉴스 읽기",
+        done: true,
+        created: populateRandomDate(),
+        updated: getCurrentDate(),
+      },
+      {
+        id: populateNewId(),
+        text: "샌드위치 사 먹기",
+        done: false,
+        created: populateRandomDate(),
+        updated: getCurrentDate(),
+      },
+      {
+        id: populateNewId(),
+        text: "리액트 공부하기",
+        done: false,
+        created: populateRandomDate(),
+        updated: getCurrentDate(),
+      },
+    ])
+  );
+};
 function App() {
-  //const [fetchResult, setFetchResult] = useState<string[]>([]);
   const { openSnackBar } = useAppSelector((state: RootState) => state.snackBar);
 
+  useEffect(() => {
+    initializeData();
+  }, []);
   return (
     <>
       <div className="App">
@@ -43,8 +63,8 @@ function App() {
 
         {openSnackBar ? <Snackbar /> : null}
       </div>
-
-      {/* <button
+      {/* 
+      <button
         className="button-with-margin"
         onClick={async () => {
           try {

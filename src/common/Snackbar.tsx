@@ -5,7 +5,8 @@
  */
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../stores/hooks";
-import { setOpenSnackBar } from "../stores/slice/SnackbarSlice";
+import { setSnackBarMsg } from "../stores/slice/SnackbarSlice";
+
 import style from "./Snackbar.module.css";
 
 export default function Snackbar() {
@@ -13,7 +14,7 @@ export default function Snackbar() {
   const { snackbarMsg } = useAppSelector((state) => state.snackBar);
   useEffect(() => {
     setTimeout(() => {
-      dispatch(setOpenSnackBar(false));
+      dispatch(setSnackBarMsg(""));
     }, 3000);
   }, [snackbarMsg]);
   return <div className={style.snackbar}>{snackbarMsg}</div>;

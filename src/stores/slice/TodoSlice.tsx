@@ -6,7 +6,6 @@
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Ttodo } from "../../types";
-import { getCurrentDate, populateNewId, populateRandomDate } from "../../utils";
 
 type TinitialState = {
   todoList: Ttodo[];
@@ -18,36 +17,7 @@ type TinitialState = {
 const initialState: TinitialState = {
   openEditModal: false,
   addingSubTaskMode: false,
-  todoList: [
-    {
-      id: populateNewId(),
-      text: "아침 산책",
-      done: true,
-      created: populateRandomDate(),
-      updated: getCurrentDate(),
-    },
-    {
-      id: populateNewId(),
-      text: "오늘의 뉴스 읽기",
-      done: true,
-      created: populateRandomDate(),
-      updated: getCurrentDate(),
-    },
-    {
-      id: populateNewId(),
-      text: "샌드위치 사 먹기",
-      done: false,
-      created: populateRandomDate(),
-      updated: getCurrentDate(),
-    },
-    {
-      id: populateNewId(),
-      text: "리액트 공부하기",
-      done: false,
-      created: populateRandomDate(),
-      updated: getCurrentDate(),
-    },
-  ],
+  todoList: [],
   selectedTodo: null,
 };
 
