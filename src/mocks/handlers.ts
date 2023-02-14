@@ -22,7 +22,7 @@ export const handlers = [
       const newTodoList = [...prevTodoList, newTodo];
 
       // Save new data to temp database
-      localStorage.setItem("todoList: ", JSON.stringify(newTodoList));
+      localStorage.setItem("todoList", JSON.stringify(newTodoList));
     });
 
     return res(
@@ -34,8 +34,13 @@ export const handlers = [
       })
     );
   }),
+
   // put
-  rest.put("/test", (req, res, ctx) => {
+  rest.put("/test/updateTodo/:todo", (req, res, ctx) => {
+    const { todo } = req.params;
+    const data = localStorage.getItem("todoList") || "[]";
+    const prevTodoList: Ttodo[] = JSON.parse(data);
+
     return res(
       ctx.status(200),
       ctx.json({
@@ -43,10 +48,10 @@ export const handlers = [
       })
     );
   }),
+
   // delete
   rest.delete("/test/deleteTodo/:todoId", (req, res, ctx) => {
     const { todoId } = req.params;
-    console.log("todoId: ", todoId);
     const data = localStorage.getItem("todoList") || "[]";
     const prevTodoList: Ttodo[] = JSON.parse(data);
 

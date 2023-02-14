@@ -52,3 +52,20 @@ export async function deleteTodoApi(todoId: Ttodo["id"]) {
 
   return json;
 }
+
+export async function updateTodoApi(todo: Ttodo) {
+  const res = await fetch(`${Constant.REQUEST_BASE_URL}/updateTodo/${todo}`, {
+    method: ApiRequest.PUT,
+  });
+  console.log(res);
+  const json = await res?.json();
+
+  if (!res.ok) {
+    throw {
+      statusText: res.statusText,
+      statusCode: res.status,
+    };
+  }
+
+  return json;
+}

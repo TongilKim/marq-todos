@@ -50,7 +50,7 @@ function App() {
   const { openSnackBar } = useAppSelector((state: RootState) => state.snackBar);
 
   useEffect(() => {
-    initializeData();
+    if (!localStorage.getItem("todoList")) initializeData();
   }, []);
   return (
     <>
