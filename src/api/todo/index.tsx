@@ -1,5 +1,5 @@
-import Constant from "../constant";
-import { ApiRequest, Ttodo } from "../types";
+import Constant from "../../constant";
+import { ApiRequest, Ttodo } from "../../types";
 
 export async function addNewTodoApi({ newTodo }: { newTodo: Ttodo }) {
   const res = await fetch(`${Constant.REQUEST_BASE_URL}/newTodo`, {
@@ -8,7 +8,7 @@ export async function addNewTodoApi({ newTodo }: { newTodo: Ttodo }) {
   });
 
   const json = await res?.json();
-  console.log("adding response: ", json);
+
   if (!res.ok) {
     throw {
       statusText: res.statusText,
@@ -28,8 +28,8 @@ export async function getTodoListApi() {
 
   if (!res.ok) {
     throw {
-      statusText: res.statusText,
-      statusCode: res.status,
+      statusText: json.resultMessage,
+      statusCode: json.resultCode,
     };
   }
 
@@ -40,30 +40,36 @@ export async function deleteTodoApi(todoId: Ttodo["id"]) {
   const res = await fetch(`${Constant.REQUEST_BASE_URL}/deleteTodo/${todoId}`, {
     method: ApiRequest.DELETE,
   });
-  console.log(res);
+
   const json = await res?.json();
 
   if (!res.ok) {
     throw {
-      statusText: res.statusText,
-      statusCode: res.status,
+      statusText: json.resultMessage,
+      statusCode: json.resultCode,
     };
   }
 
   return json;
 }
 
-export async function updateTodoApi(todo: Ttodo) {
-  const res = await fetch(`${Constant.REQUEST_BASE_URL}/updateTodo/${todo}`, {
-    method: ApiRequest.PUT,
-  });
-  console.log(res);
+export async function updateTodoApi(newTodo: {
+  id: Ttodo["id"];
+  text: Ttodo["text"];
+}) {
+  const res = await fetch(
+    `${Constant.REQUEST_BASE_URL}/updateTodo/${JSON.stringify(newTodo)}`,
+    {
+      method: ApiRequest.PUT,
+    }
+  );
+
   const json = await res?.json();
 
   if (!res.ok) {
     throw {
-      statusText: res.statusText,
-      statusCode: res.status,
+      statusText: json.resultMessage,
+      statusCode: json.resultCode,
     };
   }
 

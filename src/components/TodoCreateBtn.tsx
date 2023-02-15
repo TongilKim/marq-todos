@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MdAdd, MdDone } from "react-icons/md";
-import { addNewTodoApi } from "../api";
+import { addNewTodoApi } from "../api/todo";
 import Constant from "../constant";
 import { useAppDispatch, useAppSelector } from "../stores/hooks";
 import { setSnackBarMsg } from "../stores/slice/SnackbarSlice";
@@ -43,7 +43,7 @@ const TodoCreateBtn = () => {
         };
         await addNewTodoApi({
           newTodo: newTodoData,
-        }).then(async (res: Tresponse) => {
+        }).then((res: Tresponse) => {
           if (res.resultCode === 200) {
             dispatch(setTodoList([...todoList, newTodoData]));
             dispatch(setSnackBarMsg(res.resultMessage));

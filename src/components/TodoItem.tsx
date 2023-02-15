@@ -1,6 +1,6 @@
 import React from "react";
 import { MdDone, MdDelete, MdAdd } from "react-icons/md";
-import { deleteTodoApi } from "../api";
+import { deleteTodoApi } from "../api/todo";
 import { useAppDispatch, useAppSelector } from "../stores/hooks";
 import { setSnackBarMsg } from "../stores/slice/SnackbarSlice";
 import {

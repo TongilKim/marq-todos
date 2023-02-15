@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { getTodoListApi } from "../api";
+import { getTodoListApi } from "../api/todo";
 import { useAppDispatch, useAppSelector } from "../stores/hooks";
 import { setSnackBarMsg } from "../stores/slice/SnackbarSlice";
 import { setTodoList } from "../stores/slice/TodoSlice";

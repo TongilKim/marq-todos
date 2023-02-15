@@ -24,7 +24,7 @@ const snackbarSlice = createSlice({
     // },
     setSnackBarMsg(state: TinitialState, action: PayloadAction<string>) {
       state.snackbarMsg = action.payload;
-      state.openSnackBar = action.payload.length > 0;
+      state.openSnackBar = action.payload?.length > 0;
     },
   },
 });
