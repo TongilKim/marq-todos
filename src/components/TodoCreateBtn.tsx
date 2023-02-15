@@ -40,6 +40,7 @@ const TodoCreateBtn = () => {
           done: false,
           created: getCurrentDate(),
           updated: getCurrentDate(),
+          todoWith: [],
         };
         await addNewTodoApi({
           newTodo: newTodoData,

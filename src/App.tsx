@@ -21,6 +21,7 @@ const initializeData = async () => {
         done: true,
         created: populateRandomDate(),
         updated: getCurrentDate(),
+        todoWith: [],
       },
       {
         id: populateNewId(),
@@ -28,6 +29,7 @@ const initializeData = async () => {
         done: true,
         created: populateRandomDate(),
         updated: getCurrentDate(),
+        todoWith: [],
       },
       {
         id: populateNewId(),
@@ -35,6 +37,7 @@ const initializeData = async () => {
         done: false,
         created: populateRandomDate(),
         updated: getCurrentDate(),
+        todoWith: [],
       },
       {
         id: populateNewId(),
@@ -42,6 +45,7 @@ const initializeData = async () => {
         done: false,
         created: populateRandomDate(),
         updated: getCurrentDate(),
+        todoWith: [],
       },
     ])
   );
@@ -63,90 +67,6 @@ function App() {
 
         {openSnackBar ? <Snackbar /> : null}
       </div>
-      {/* 
-      <button
-        className="button-with-margin"
-        onClick={async () => {
-          try {
-            const json = await callApi<{ messages: string }>({
-              url: "/test",
-              method: "post",
-            });
-
-            setFetchResult([...fetchResult, JSON.stringify(json.messages)]);
-          } catch (e) {
-            console.log("e", e);
-          }
-        }}
-      >
-        post test
-      </button>
-      <button
-        className="button-with-margin"
-        onClick={async () => {
-          try {
-            const json = await callApi<{ messages: string }>({
-              url: "/test",
-              method: "get",
-            });
-
-            setFetchResult([...fetchResult, JSON.stringify(json.messages)]);
-          } catch (e) {
-            console.log("e", e);
-          }
-        }}
-      >
-        get test
-      </button>
-      <button
-        className="button-with-margin"
-        onClick={async () => {
-          try {
-            const json = await callApi<{ messages: string }>({
-              url: "/test",
-              method: "put",
-            });
-
-            setFetchResult([...fetchResult, JSON.stringify(json.messages)]);
-          } catch (e) {
-            console.log("e", e);
-          }
-        }}
-      >
-        put test
-      </button>
-      <button
-        className="button-with-margin"
-        onClick={async () => {
-          try {
-            const json = await callApi<{ messages: string }>({
-              url: "/test",
-              method: "delete",
-            });
-
-            setFetchResult([...fetchResult, JSON.stringify(json.messages)]);
-          } catch (e) {
-            console.log("e", e);
-          }
-        }}
-      >
-        delete test
-      </button>
-      <button
-        className="button-with-margin clear"
-        onClick={() => setFetchResult([])}
-      >
-        Clear!
-      </button>
-      <br />
-      <br />
-      {fetchResult?.length > 0 && (
-        <ul className="fetch-result">
-          {[...fetchResult].reverse().map((v, i) => (
-            <li key={`${v}-${i}`}>{v}</li>
-          ))}
-        </ul>
-      )} */}
     </>
   );
 }

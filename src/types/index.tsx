@@ -4,6 +4,7 @@ export type Ttodo = {
   done: boolean;
   created: string;
   updated: string;
+  todoWith?: Ttodo[];
 };
 
 export enum ApiRequest {

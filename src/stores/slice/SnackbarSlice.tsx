@@ -19,9 +19,6 @@ const snackbarSlice = createSlice({
   name: "snackBar",
   initialState,
   reducers: {
-    // setOpenSnackBar(state: TinitialState, action: PayloadAction<boolean>) {
-    //   state.openSnackBar = action.payload;
-    // },
     setSnackBarMsg(state: TinitialState, action: PayloadAction<string>) {
       state.snackbarMsg = action.payload;
       state.openSnackBar = action.payload?.length > 0;

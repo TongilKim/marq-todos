@@ -3,10 +3,10 @@ import TodoEditModal from "../common/TodoEditModal";
 import { useAppSelector } from "../stores/hooks";
 import "./TodoContainer.scss";
 
-type Props = {
+type Tprops = {
   children?: React.ReactNode;
 };
-function TodoTemplate({ children }: Props) {
+function TodoContainer({ children }: Tprops) {
   const { openEditModal, addingSubTaskMode } = useAppSelector(
     (state) => state.todoList
   );
@@ -20,4 +20,4 @@ function TodoTemplate({ children }: Props) {
   );
 }
 
-export default TodoTemplate;
+export default TodoContainer;

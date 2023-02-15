@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { MdDone, MdDelete, MdAdd } from "react-icons/md";
-import { deleteTodoApi } from "../api/todo";
+import { deleteTodoApi, updateTodoApi } from "../api/todo";
 import { useAppDispatch, useAppSelector } from "../stores/hooks";
 import { setSnackBarMsg } from "../stores/slice/SnackbarSlice";
 import {
@@ -12,25 +12,64 @@ import { Tresponse, TResponseError, Ttodo } from "../types";
 import "./TodoItem.scss";
 
 type Tprops = {
-  id: Ttodo["id"];
-  text: Ttodo["text"];
-  done: Ttodo["done"];
+  currentTodo: Ttodo;
 };
-const TodoItem = ({ id, done, text }: Tprops) => {
+const TodoItem = ({ currentTodo }: Tprops) => {
   const dispatch = useAppDispatch();
-  const { addingSubTaskMode, todoList } = useAppSelector(
+  const { id, text, done } = currentTodo;
+  const { addingSubTaskMode, todoList, selectedTodo } = useAppSelector(
     (state) => state.todoList
   );
 
-  const onClickCompleteTask = () => {
-    if (addingSubTaskMode) {
-    } else {
-      const newTodoList = todoList.map((todo) =>
-        todo.id === id ? { ...todo, done: !todo.done } : todo
-      );
-      dispatch(setTodoList(newTodoList));
+  const addNewTodoWith = useCallback(async () => {
+    // selectedTodo -> 초기 목록에서 선택된 (Modal 창으로 띄어진) todo object
+    // currentTodo -> 추가되는 todo object
+    const newTodoObj = {
+      ...(selectedTodo as Ttodo),
+      todoWith: [...(selectedTodo?.todoWith as Ttodo[]), currentTodo],
+    };
+    dispatch(setSelectedTodo(newTodoObj));
+    console.log("newTodoObj: ", newTodoObj);
+    try {
+      await updateTodoApi(newTodoObj).then((res) => {
+        const { result, resultMessage } = res;
+
+        dispatch(setTodoList(result));
+        dispatch(setSnackBarMsg(resultMessage));
+      });
+    } catch (err) {
+      const typedError = err as TResponseError;
+      dispatch(setSnackBarMsg(typedError.statusText));
     }
-  };
+  }, [selectedTodo, currentTodo]);
+
+  const onClickCompleteTask = useCallback(async () => {
+    if (addingSubTaskMode) {
+      // Should add todoWith list
+      addNewTodoWith();
+    } else {
+      // Should update 'done' property status
+      const newTodoObj = todoList.find((todo) => todo.id === id);
+      try {
+        if (newTodoObj) {
+          await updateTodoApi({
+            ...newTodoObj,
+            done: !newTodoObj?.done,
+          }).then((res) => {
+            const { result, resultMessage } = res;
+
+            dispatch(setTodoList(result));
+            dispatch(setSnackBarMsg(resultMessage));
+          });
+        } else {
+          dispatch(setSnackBarMsg("상태를 변경 할 수 없습니다."));
+        }
+      } catch (err) {
+        const typedError = err as TResponseError;
+        dispatch(setSnackBarMsg(typedError.statusText));
+      }
+    }
+  }, [addingSubTaskMode, todoList, selectedTodo]);
 
   const onClickRemove = async () => {
     try {
@@ -47,13 +86,14 @@ const TodoItem = ({ id, done, text }: Tprops) => {
     }
   };
 
-  const onClickTodoText = () => {
+  const onClickTodoText = useCallback(() => {
     if (addingSubTaskMode) {
+      addNewTodoWith();
     } else {
-      dispatch(setSelectedTodo(id));
+      dispatch(setSelectedTodo(currentTodo));
       dispatch(setOpenEditModal(true));
     }
-  };
+  }, [addingSubTaskMode, selectedTodo]);
 
   return (
     <div className="todoItem_root">

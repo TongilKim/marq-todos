@@ -63,7 +63,10 @@ export const handlers = [
     } else {
       const newTodoList = currentTodoList.map((todo) =>
         todo.id === newTodo.id
-          ? { ...todo, text: newTodo.text, updated: getCurrentDate() }
+          ? {
+              ...newTodo,
+              updated: getCurrentDate(),
+            }
           : todo
       );
       // Save new data to temp database

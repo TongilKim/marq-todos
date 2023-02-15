@@ -12,6 +12,7 @@ type TinitialState = {
   openEditModal: boolean;
   addingSubTaskMode: boolean;
   selectedTodo: Ttodo | null;
+  todoWith: Ttodo[];
 };
 
 const initialState: TinitialState = {
@@ -19,6 +20,7 @@ const initialState: TinitialState = {
   addingSubTaskMode: false,
   todoList: [],
   selectedTodo: null,
+  todoWith: [],
 };
 
 const todoSlice = createSlice({
@@ -35,9 +37,8 @@ const todoSlice = createSlice({
       console.log("setting todoList: ", action.payload);
       state.todoList = action.payload;
     },
-    setSelectedTodo(state, action: PayloadAction<Ttodo["id"]>) {
-      state.selectedTodo =
-        state.todoList.find((todo) => todo.id === action.payload) ?? null;
+    setSelectedTodo(state, action: PayloadAction<Ttodo>) {
+      state.selectedTodo = action.payload;
     },
   },
 });

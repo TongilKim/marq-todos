@@ -9,7 +9,7 @@ import "./TodoList.scss";
 
 const TodoList = () => {
   const dispatch = useAppDispatch();
-  const { todoList, addingSubTaskMode } = useAppSelector(
+  const { todoList, addingSubTaskMode, selectedTodo } = useAppSelector(
     (state) => state.todoList
   );
 
@@ -25,28 +25,18 @@ const TodoList = () => {
       }
     }
   }, []);
+  console.log("hi");
   return (
     <div className="todoList_root">
       {addingSubTaskMode
         ? todoList.map(
             (todo) =>
-              !todo.done && (
-                <TodoItem
-                  id={todo.id}
-                  text={todo.text}
-                  done={todo.done}
-                  key={todo.id}
-                />
+              !todo.done &&
+              todo.id !== selectedTodo?.id && (
+                <TodoItem key={todo.id} currentTodo={todo} />
               )
           )
-        : todoList.map((todo) => (
-            <TodoItem
-              id={todo.id}
-              text={todo.text}
-              done={todo.done}
-              key={todo.id}
-            />
-          ))}
+        : todoList.map((todo) => <TodoItem key={todo.id} currentTodo={todo} />)}
     </div>
   );
 };

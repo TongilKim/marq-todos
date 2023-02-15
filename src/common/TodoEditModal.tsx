@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import "./TodoEditModal.scss";
 import { IoIosAddCircle } from "react-icons/io";
@@ -18,10 +18,10 @@ const TodoEditModal = () => {
   const dispatch = useAppDispatch();
   const { selectedTodo } = useAppSelector((state) => state.todoList);
 
-  const onClickAddingSubTask = () => {
-    dispatch(setOpenEditModal(false));
+  const onClickAddingSubTask = useCallback(() => {
     dispatch(setAddingSubTaskMode(true));
-  };
+    dispatch(setOpenEditModal(false));
+  }, [dispatch]);
 
   const onClickEditBtn = async () => {
     try {
@@ -33,7 +33,7 @@ const TodoEditModal = () => {
       }
 
       const newTodoObj = {
-        id: (selectedTodo as Ttodo).id,
+        ...(selectedTodo as Ttodo),
         text: newTodo,
       };
       await updateTodoApi(newTodoObj).then((res) => {
@@ -59,7 +59,7 @@ const TodoEditModal = () => {
 
   useEffect(() => {
     if (selectedTodo) setNewTodo(selectedTodo.text);
-  }, []);
+  }, [selectedTodo]);
 
   return (
     <>
@@ -74,8 +74,12 @@ const TodoEditModal = () => {
                     <li>생성 날짜: {selectedTodo.created}</li>
                     <li>최근 업데이트: {selectedTodo.updated}</li>
                     <li>
-                      함께 해야 할 일: 리액트 공부, 애 보기{" "}
-                      <IoIosAddCircle onClick={onClickAddingSubTask} />
+                      {`함께 해야 할 일: ${selectedTodo.todoWith?.map(
+                        (todo) => todo.text
+                      )}`}
+                      {!selectedTodo.done && (
+                        <IoIosAddCircle onClick={onClickAddingSubTask} />
+                      )}
                     </li>
                   </ul>
                 </div>
@@ -85,8 +89,10 @@ const TodoEditModal = () => {
                   onChange={onChangeModifyTodoTitle}
                   readOnly={selectedTodo.done}
                   maxLength={Constant.TEXTAREA_MAX_LENGTH}
+                  autoFocus
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
+                      e.preventDefault();
                       onClickEditBtn();
                     }
                   }}
@@ -104,4 +110,4 @@ const TodoEditModal = () => {
   );
 };
 
-export default TodoEditModal;
+export default React.memo(TodoEditModal);

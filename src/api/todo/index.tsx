@@ -53,10 +53,7 @@ export async function deleteTodoApi(todoId: Ttodo["id"]) {
   return json;
 }
 
-export async function updateTodoApi(newTodo: {
-  id: Ttodo["id"];
-  text: Ttodo["text"];
-}) {
+export async function updateTodoApi(newTodo: Ttodo) {
   const res = await fetch(
     `${Constant.REQUEST_BASE_URL}/updateTodo/${JSON.stringify(newTodo)}`,
     {
