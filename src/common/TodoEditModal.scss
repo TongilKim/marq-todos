@@ -42,10 +42,16 @@
         .completed {
           text-decoration: line-through;
         }
-        svg {
-          margin-left: 5px;
-          cursor: pointer;
-        }
+      }
+      div {
+        display: flex;
+        align-items: center;
+        color: #38d9a9;
+      }
+      svg {
+        color: #868e96;
+        margin-left: 5px;
+        cursor: pointer;
       }
     }
 

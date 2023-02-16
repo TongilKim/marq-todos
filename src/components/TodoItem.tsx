@@ -21,7 +21,7 @@ const TodoItem = ({ currentTodo }: Tprops) => {
     (state) => state.todoList
   );
 
-  const validateDeletable = () => {
+  const validateDeletable = useCallback(() => {
     if (todoWith && todoList) {
       for (let i = 0; i < todoWith.length; i++) {
         if (todoList.find((todo) => todo.id === todoWith[i])?.done === false) {
@@ -31,7 +31,8 @@ const TodoItem = ({ currentTodo }: Tprops) => {
       return true;
     }
     return false;
-  };
+  }, [todoList, todoWith]);
+
   const addNewTodoWith = useCallback(async () => {
     // selectedTodo -> 초기 목록에서 선택된 (Modal 창으로 띄어진) todo object
     // currentTodo -> 추가되는 todo object
@@ -68,7 +69,12 @@ const TodoItem = ({ currentTodo }: Tprops) => {
             done: !newTodoObj?.done,
           }).then((res) => {
             const { result, resultMessage } = res;
-
+            dispatch(
+              setSelectedTodo({
+                ...newTodoObj,
+                done: !newTodoObj?.done,
+              })
+            );
             dispatch(setTodoList(result));
             dispatch(setSnackBarMsg(resultMessage));
           });

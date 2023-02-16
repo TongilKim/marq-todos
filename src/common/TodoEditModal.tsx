@@ -32,18 +32,19 @@ const TodoEditModal = () => {
         );
         return;
       }
+      if (!selectedTodo?.done) {
+        const newTodoObj = {
+          ...(selectedTodo as Ttodo),
+          text: newTodo,
+        };
+        await updateTodoApi(newTodoObj).then((res) => {
+          const { result, resultMessage } = res;
 
-      const newTodoObj = {
-        ...(selectedTodo as Ttodo),
-        text: newTodo,
-      };
-      await updateTodoApi(newTodoObj).then((res) => {
-        const { result, resultMessage } = res;
-
-        dispatch(setSelectedTodo(newTodoObj));
-        dispatch(setTodoList(result));
-        dispatch(setSnackBarMsg(resultMessage));
-      });
+          dispatch(setSelectedTodo(newTodoObj));
+          dispatch(setTodoList(result));
+          dispatch(setSnackBarMsg(resultMessage));
+        });
+      }
     } catch (err) {
       const typedError = err as TResponseError;
       dispatch(setSnackBarMsg(typedError.statusText));
@@ -62,15 +63,19 @@ const TodoEditModal = () => {
     []
   );
 
-  const getTodoText = (searchId: Ttodo["id"]) => {
-    const renderTodo = todoList.find((todo) => todo.id === searchId);
-
-    return (
-      <div className={renderTodo?.done ? "completed" : ""}>
-        {renderTodo?.text}@{renderTodo?.id}
-      </div>
-    );
-  };
+  const getTodoText = useCallback(
+    (searchId: Ttodo["id"]) => {
+      const renderTodo = todoList.find((todo) => todo.id === searchId);
+      if (renderTodo) {
+        return (
+          <span className={renderTodo.done ? "completed" : ""}>
+            - {renderTodo.text} @{renderTodo.id}
+          </span>
+        );
+      }
+    },
+    [todoList]
+  );
 
   useEffect(() => {
     if (selectedTodo) setNewTodo(selectedTodo.text);
@@ -88,17 +93,17 @@ const TodoEditModal = () => {
                   <ul>
                     <li>생성 날짜: {selectedTodo.created}</li>
                     <li>최근 업데이트: {selectedTodo.updated}</li>
-                    <li>
-                      <>
-                        함께 해야 할 일:{" "}
-                        {selectedTodo.todoWith?.map((todoId) =>
-                          getTodoText(todoId)
-                        )}
+                    <>
+                      <div>
+                        함께 해야 할 일:
                         {!selectedTodo.done && (
                           <IoIosAddCircle onClick={onClickAddingSubTask} />
                         )}
-                      </>
-                    </li>
+                      </div>
+                      {selectedTodo.todoWith?.map((todoId) => (
+                        <li>{getTodoText(todoId)}</li>
+                      ))}
+                    </>
                   </ul>
                 </div>
                 <textarea
