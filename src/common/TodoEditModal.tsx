@@ -69,7 +69,7 @@ const TodoEditModal = () => {
       if (renderTodo) {
         return (
           <span className={renderTodo.done ? "completed" : ""}>
-            - {renderTodo.text} @{renderTodo.id}
+            - {renderTodo.text} <i>@{renderTodo.id}</i>
           </span>
         );
       }

@@ -21,7 +21,7 @@ const TodoItem = ({ currentTodo }: Tprops) => {
     (state) => state.todoList
   );
 
-  const validateDeletable = useCallback(() => {
+  const validateIfCompleted = useCallback(() => {
     if (todoWith && todoList) {
       for (let i = 0; i < todoWith.length; i++) {
         if (todoList.find((todo) => todo.id === todoWith[i])?.done === false) {
@@ -63,6 +63,11 @@ const TodoItem = ({ currentTodo }: Tprops) => {
       // Should update 'done' property status
       const newTodoObj = todoList.find((todo) => todo.id === id);
       try {
+        const completAble = validateIfCompleted();
+        if (!completAble) {
+          dispatch(setSnackBarMsg("함께 해야 할 일이 아직 끝나지 않았습니다"));
+          return;
+        }
         if (newTodoObj) {
           await updateTodoApi({
             ...newTodoObj,
@@ -90,11 +95,11 @@ const TodoItem = ({ currentTodo }: Tprops) => {
 
   const onClickRemove = async () => {
     try {
-      const deleteAble = validateDeletable();
-      if (!deleteAble) {
-        dispatch(setSnackBarMsg("함께 해야 할 일이 아직 끝나지 않았습니다"));
-        return;
-      }
+      // const deleteAble = validateIfCompleted();
+      // if (!deleteAble) {
+      //   dispatch(setSnackBarMsg("함께 해야 할 일이 아직 끝나지 않았습니다"));
+      //   return;
+      // }
       await deleteTodoApi(id).then((res: Tresponse) => {
         if (res.resultCode === 200) {
           const deletedList = todoList.filter((todo) => todo.id !== id);

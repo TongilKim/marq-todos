@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 
 import "./App.css";
+import Loader from "./common/Loader";
 import Snackbar from "./common/Snackbar";
 import TodoContainer from "./components/TodoContainer";
 import TodoCreateBtn from "./components/TodoCreateBtn";
@@ -56,6 +57,10 @@ function App() {
   useEffect(() => {
     if (!localStorage.getItem("todoList")) initializeData();
   }, []);
+
+  if (!localStorage.getItem("todoList")) {
+    return <Loader />;
+  }
   return (
     <>
       <div className="App">

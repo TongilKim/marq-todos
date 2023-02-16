@@ -14,7 +14,7 @@ export const TodoHeader = () => {
         (todo) =>
           todo.id !== selectedTodo?.id &&
           !todo.done &&
-          !selectedTodo?.todoWith?.find((item) => item.id === todo.id)
+          !selectedTodo?.todoWith?.find((todoId) => todoId === todo.id)
       ).length;
     } else {
       availableTodoCount = todoList.filter(
