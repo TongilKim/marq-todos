@@ -39,6 +39,9 @@
         margin-bottom: 10px;
         display: flex;
         align-items: center;
+        .completed {
+          text-decoration: line-through;
+        }
         svg {
           margin-left: 5px;
           cursor: pointer;

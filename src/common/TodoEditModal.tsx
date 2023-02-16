@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../stores/hooks";
 import {
   setAddingSubTaskMode,
   setOpenEditModal,
+  setSelectedTodo,
   setTodoList,
 } from "../stores/slice/TodoSlice";
 import Constant from "../constant";
@@ -16,7 +17,7 @@ const TodoEditModal = () => {
   const [newTodo, setNewTodo] = useState("");
 
   const dispatch = useAppDispatch();
-  const { selectedTodo } = useAppSelector((state) => state.todoList);
+  const { selectedTodo, todoList } = useAppSelector((state) => state.todoList);
 
   const onClickAddingSubTask = useCallback(() => {
     dispatch(setAddingSubTaskMode(true));
@@ -39,6 +40,7 @@ const TodoEditModal = () => {
       await updateTodoApi(newTodoObj).then((res) => {
         const { result, resultMessage } = res;
 
+        dispatch(setSelectedTodo(newTodoObj));
         dispatch(setTodoList(result));
         dispatch(setSnackBarMsg(resultMessage));
       });
@@ -55,7 +57,20 @@ const TodoEditModal = () => {
     dispatch(setOpenEditModal(false));
   };
 
-  const onChangeModifyTodoTitle = (e) => setNewTodo(e.target.value);
+  const onChangeModifyTodoTitle = useCallback(
+    (e) => setNewTodo(e.target.value),
+    []
+  );
+
+  const getTodoText = (searchId: Ttodo["id"]) => {
+    const renderTodo = todoList.find((todo) => todo.id === searchId);
+
+    return (
+      <div className={renderTodo?.done ? "completed" : ""}>
+        {renderTodo?.text}@{renderTodo?.id}
+      </div>
+    );
+  };
 
   useEffect(() => {
     if (selectedTodo) setNewTodo(selectedTodo.text);
@@ -74,12 +89,15 @@ const TodoEditModal = () => {
                     <li>생성 날짜: {selectedTodo.created}</li>
                     <li>최근 업데이트: {selectedTodo.updated}</li>
                     <li>
-                      {`함께 해야 할 일: ${selectedTodo.todoWith?.map(
-                        (todo) => todo.text
-                      )}`}
-                      {!selectedTodo.done && (
-                        <IoIosAddCircle onClick={onClickAddingSubTask} />
-                      )}
+                      <>
+                        함께 해야 할 일:{" "}
+                        {selectedTodo.todoWith?.map((todoId) =>
+                          getTodoText(todoId)
+                        )}
+                        {!selectedTodo.done && (
+                          <IoIosAddCircle onClick={onClickAddingSubTask} />
+                        )}
+                      </>
                     </li>
                   </ul>
                 </div>

@@ -16,20 +16,31 @@ type Tprops = {
 };
 const TodoItem = ({ currentTodo }: Tprops) => {
   const dispatch = useAppDispatch();
-  const { id, text, done } = currentTodo;
+  const { id, text, done, todoWith } = currentTodo;
   const { addingSubTaskMode, todoList, selectedTodo } = useAppSelector(
     (state) => state.todoList
   );
 
+  const validateDeletable = () => {
+    if (todoWith && todoList) {
+      for (let i = 0; i < todoWith.length; i++) {
+        if (todoList.find((todo) => todo.id === todoWith[i])?.done === false) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  };
   const addNewTodoWith = useCallback(async () => {
     // selectedTodo -> 초기 목록에서 선택된 (Modal 창으로 띄어진) todo object
     // currentTodo -> 추가되는 todo object
     const newTodoObj = {
       ...(selectedTodo as Ttodo),
-      todoWith: [...(selectedTodo?.todoWith as Ttodo[]), currentTodo],
+      todoWith: [...(selectedTodo?.todoWith as Ttodo["id"][]), currentTodo.id],
     };
     dispatch(setSelectedTodo(newTodoObj));
-    console.log("newTodoObj: ", newTodoObj);
+
     try {
       await updateTodoApi(newTodoObj).then((res) => {
         const { result, resultMessage } = res;
@@ -73,6 +84,11 @@ const TodoItem = ({ currentTodo }: Tprops) => {
 
   const onClickRemove = async () => {
     try {
+      const deleteAble = validateDeletable();
+      if (!deleteAble) {
+        dispatch(setSnackBarMsg("함께 해야 할 일이 아직 끝나지 않았습니다"));
+        return;
+      }
       await deleteTodoApi(id).then((res: Tresponse) => {
         if (res.resultCode === 200) {
           const deletedList = todoList.filter((todo) => todo.id !== id);
