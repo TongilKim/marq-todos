@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 
-import "./App.css";
 import Snackbar from "./common/Snackbar";
 import TodoContainer from "./components/TodoContainer";
 import TodoCreateBtn from "./components/TodoCreateBtn";
