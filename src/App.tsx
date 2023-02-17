@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 
 import "./App.css";
-import Loader from "./common/Loader";
 import Snackbar from "./common/Snackbar";
 import TodoContainer from "./components/TodoContainer";
 import TodoCreateBtn from "./components/TodoCreateBtn";
@@ -42,8 +41,64 @@ const initializeData = async () => {
       },
       {
         id: populateNewId(),
-        text: "리액트 공부하기",
+        text: "리액트 공부",
         done: false,
+        created: populateRandomDate(),
+        updated: getCurrentDate(),
+        todoWith: [],
+      },
+      {
+        id: populateNewId(),
+        text: "Todo 1",
+        done: false,
+        created: populateRandomDate(),
+        updated: getCurrentDate(),
+        todoWith: [],
+      },
+      {
+        id: populateNewId(),
+        text: "Todo 2",
+        done: true,
+        created: populateRandomDate(),
+        updated: getCurrentDate(),
+        todoWith: [],
+      },
+      {
+        id: populateNewId(),
+        text: "Todo 3",
+        done: false,
+        created: populateRandomDate(),
+        updated: getCurrentDate(),
+        todoWith: [],
+      },
+      {
+        id: populateNewId(),
+        text: "Todo 4",
+        done: true,
+        created: populateRandomDate(),
+        updated: getCurrentDate(),
+        todoWith: [],
+      },
+      {
+        id: populateNewId(),
+        text: "Todo 5",
+        done: false,
+        created: populateRandomDate(),
+        updated: getCurrentDate(),
+        todoWith: [],
+      },
+      {
+        id: populateNewId(),
+        text: "Todo 6",
+        done: false,
+        created: populateRandomDate(),
+        updated: getCurrentDate(),
+        todoWith: [],
+      },
+      {
+        id: populateNewId(),
+        text: "Todo 7",
+        done: true,
         created: populateRandomDate(),
         updated: getCurrentDate(),
         todoWith: [],
@@ -58,9 +113,6 @@ function App() {
     if (!localStorage.getItem("todoList")) initializeData();
   }, []);
 
-  if (!localStorage.getItem("todoList")) {
-    return <Loader />;
-  }
   return (
     <>
       <div className="App">

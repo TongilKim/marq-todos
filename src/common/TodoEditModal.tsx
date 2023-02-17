@@ -13,8 +13,10 @@ import Constant from "../constant";
 import { updateTodoApi } from "../api/todo";
 import { setSnackBarMsg } from "../stores/slice/SnackbarSlice";
 import { TResponseError, Ttodo } from "../types";
+import Loader from "./Loader";
 const TodoEditModal = () => {
   const [newTodo, setNewTodo] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useAppDispatch();
   const { selectedTodo, todoList } = useAppSelector((state) => state.todoList);
@@ -26,6 +28,7 @@ const TodoEditModal = () => {
 
   const onClickEditBtn = async () => {
     try {
+      setLoading(true);
       if (newTodo.length === 0) {
         dispatch(
           setSnackBarMsg("업데이트 내용은 최소 1글자 이상 이어야 합니다.")
@@ -50,8 +53,11 @@ const TodoEditModal = () => {
       dispatch(setSnackBarMsg(typedError.statusText));
     }
 
-    dispatch(setOpenEditModal(false));
-    setNewTodo("");
+    setTimeout(() => {
+      setLoading(false);
+      dispatch(setOpenEditModal(false));
+      setNewTodo("");
+    }, 350);
   };
 
   const onClickCloseBtn = () => {
@@ -81,6 +87,7 @@ const TodoEditModal = () => {
     if (selectedTodo) setNewTodo(selectedTodo.text);
   }, [selectedTodo]);
 
+  if (loading) return <Loader />;
   return (
     <>
       {selectedTodo && (
@@ -101,7 +108,7 @@ const TodoEditModal = () => {
                         )}
                       </div>
                       {selectedTodo.todoWith?.map((todoId) => (
-                        <li>{getTodoText(todoId)}</li>
+                        <li key={todoId}>{getTodoText(todoId)}</li>
                       ))}
                     </>
                   </ul>

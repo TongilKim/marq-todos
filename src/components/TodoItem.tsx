@@ -1,6 +1,7 @@
-import React, { useCallback } from "react";
+import React, { LegacyRef, useCallback, useState } from "react";
 import { MdDone, MdDelete, MdAdd } from "react-icons/md";
 import { deleteTodoApi, updateTodoApi } from "../api/todo";
+
 import { useAppDispatch, useAppSelector } from "../stores/hooks";
 import { setSnackBarMsg } from "../stores/slice/SnackbarSlice";
 import {
@@ -13,8 +14,9 @@ import "./TodoItem.scss";
 
 type Tprops = {
   currentTodo: Ttodo;
+  lastElementRef: ((node: HTMLElement) => void) | null;
 };
-const TodoItem = ({ currentTodo }: Tprops) => {
+const TodoItem = ({ currentTodo, lastElementRef }: Tprops) => {
   const dispatch = useAppDispatch();
   const { id, text, done, todoWith } = currentTodo;
   const { addingSubTaskMode, todoList, selectedTodo } = useAppSelector(
@@ -80,6 +82,7 @@ const TodoItem = ({ currentTodo }: Tprops) => {
                 done: !newTodoObj?.done,
               })
             );
+
             dispatch(setTodoList(result));
             dispatch(setSnackBarMsg(resultMessage));
           });
@@ -113,17 +116,20 @@ const TodoItem = ({ currentTodo }: Tprops) => {
     }
   };
 
-  const onClickTodoText = useCallback(() => {
+  const openTodoDetailModal = useCallback(() => {
     if (addingSubTaskMode) {
       addNewTodoWith();
     } else {
       dispatch(setSelectedTodo(currentTodo));
       dispatch(setOpenEditModal(true));
     }
-  }, [addingSubTaskMode, selectedTodo]);
+  }, [addNewTodoWith, addingSubTaskMode, currentTodo]);
 
   return (
-    <div className="todoItem_root">
+    <div
+      className="todoItem_root"
+      ref={lastElementRef as LegacyRef<HTMLDivElement>}
+    >
       <div
         className={`checkCircle_${done ? "completed" : "uncompleted"}`}
         onClick={onClickCompleteTask}
@@ -132,7 +138,7 @@ const TodoItem = ({ currentTodo }: Tprops) => {
       </div>
       <div
         className={`todoText_${done ? "completed" : "uncompleted"}`}
-        onClick={onClickTodoText}
+        onClick={openTodoDetailModal}
       >
         {text}
       </div>
