@@ -85,4 +85,7 @@
 - hot reload 적용
 - `yarn build` 스크립트 사용시 public 폴더에 js, css 파일 export
 
+### DB
+
+- 브라우저 LocalStorage 사용
 ---
