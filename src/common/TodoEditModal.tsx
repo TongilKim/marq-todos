@@ -14,6 +14,7 @@ import { updateTodoApi } from "../api/todo";
 import { setSnackBarMsg } from "../stores/slice/SnackbarSlice";
 import { TResponseError, Ttodo } from "../types";
 import Loader from "./Loader";
+
 const TodoEditModal = () => {
   const [newTodo, setNewTodo] = useState("");
   const [loading, setLoading] = useState(false);
@@ -53,6 +54,7 @@ const TodoEditModal = () => {
       dispatch(setSnackBarMsg(typedError.statusText));
     }
 
+    // 없어도 되는 timeout 이지만 일반적으로 서버에 요청 하면 pending term이 있기에, 의도적으로 Loading 노출
     setTimeout(() => {
       setLoading(false);
       dispatch(setOpenEditModal(false));
@@ -60,12 +62,12 @@ const TodoEditModal = () => {
     }, 350);
   };
 
-  const onClickCloseBtn = () => {
+  const onClickCloseBtn = useCallback(() => {
     dispatch(setOpenEditModal(false));
-  };
+  }, []);
 
   const onChangeModifyTodoTitle = useCallback(
-    (e) => setNewTodo(e.target.value),
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => setNewTodo(e.target.value),
     []
   );
 

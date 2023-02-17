@@ -3,7 +3,6 @@ import { Ttodo } from "../types";
 import { getCurrentDate } from "../utils";
 
 const saveToDatabase = (newTodoList: Ttodo[]) => {
-  console.log("updated: ", newTodoList);
   localStorage.setItem("todoList", JSON.stringify(newTodoList));
 };
 
