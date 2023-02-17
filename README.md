@@ -16,6 +16,13 @@
 
 <br/>
 
+## Application 
+<img width="597" alt="image" src="https://user-images.githubusercontent.com/35641052/219678055-e0e8a60f-3cfd-4de6-81e6-9f803741d176.png">
+
+---
+
+<br/>
+
 ## 파일구조
 
 📦src <br/>
