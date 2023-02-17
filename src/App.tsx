@@ -11,7 +11,7 @@ import { useAppSelector } from "./stores/hooks";
 
 import { getCurrentDate, populateNewId, populateRandomDate } from "./utils";
 
-const initializeData = async () => {
+export const initializeData = async () => {
   localStorage.setItem(
     "todoList",
     JSON.stringify([
